@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown
+           data-separator="\n---\n$"
+           data-vertical="\n--\n">
+           <script type="text/template">
+# RubyistがGo言語で遊んでみた
+
+termbox-goで花火を打ち上げてみた
+
+---
+
+## 目次
+
+* 自己紹介
+* デモ
+* 作った理由
+* コード解説
+* はまったところ
+* まとめ
+
+---
+
+
+## 自己紹介
+
+* 名前: セラリン
+* 仕事: Railsを使ったアプリケーション開発
+* 趣味: ゲーム(ドラクエ11絶賛プレイ中)
+
+---
+
+# デモ
+
+---
+
+## 作った理由
+
+Go言語でとにかく何か作ってみたい！
+* CRUDアプリを作るも、RailsやShinatraの方が楽という結果に終わる
+* Go言語本や記事を探す
+* termbox-goの作品
+* iPhone版Lineの話題
+
+---
+
+# コード解説
+
+---
+
+## Go言語の簡単な仕様
+
+
+---
+
+## コード解説
+
+
+---
+
+## go
+
+変数代入
+型
+型変換
+import
+関数
+ループ(for loop)
+panic
+make
+
+---
+
+## よく使うパッケージ
+
+* time
+  time.Sleep
+  time.Now
+
+* math
+  math.Cos
+  math.Sin
+
+* math/rand
+  rand.Seed
+  rand.Intn
+
+
+---
+
+## termbox-goの関数
+
+termbox.Init
+termbox.Close
+termbox.Event
+termbox.PollEvent
+termbox.SetCell
+termbox.ColorDefault
+termbox.Attribute
+termbox.Flush
+termbox.EventKey
+termbox.KeyEsc
+termbox.Size
+
+
+---
+
+## はまったところ
+
+---
+
+## まとめ
+
+---
+
+
+# おまけ
+
+---
+
+## 好きな記事
+
+---
+
+### おわり
+
+
+
+
+           </script>
+       </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				transition: 'default',
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
