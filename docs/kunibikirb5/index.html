@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Kunibiki.rb#5</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
@@ -24,10 +24,11 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section data-markdown
+				<section data-markdown=""
            data-separator="\n---\n$"
-           data-vertical="\n--\n">
+           data-separator-vertical="\n--\n$">
            <script type="text/template">
+
 # RubyistがGo言語で遊んでみた
 
 termbox-goで花火を打ち上げてみた
@@ -50,6 +51,7 @@ termbox-goで花火を打ち上げてみた
 
 * 名前: セラリン
 * 仕事: Railsを使ったアプリケーション開発
+* 普段Ruby、JavaScriot(他の言語はいまいち)
 * 趣味: ゲーム(ドラクエ11絶賛プレイ中)
 
 ---
@@ -58,11 +60,24 @@ termbox-goで花火を打ち上げてみた
 
 ---
 
-## 作った理由
+# 作った理由
 
-Go言語でとにかく何か作ってみたい！
-* CRUDアプリを作るも、RailsやShinatraの方が楽という結果に終わる
-* Go言語本や記事を探す
+--
+
+## Go言語でとにかく何か作ってみたい！
+
+--
+
+## CRUDアプリ
+
+--
+
+Railsの方が楽!!という結果に...
+
+--
+
+## 考えた結果
+
 * termbox-goの作品
 * iPhone版Lineの話題
 
@@ -70,79 +85,137 @@ Go言語でとにかく何か作ってみたい！
 
 # コード解説
 
----
+--
 
-## Go言語の簡単な仕様
+## Go言語の用語メモ
 
-
----
-
-## コード解説
-
-
----
+--
 
 ## go
 
-変数代入
-型
-型変換
-import
-関数
-ループ(for loop)
-panic
-make
+変数定義・初期化
 
----
+```
+var x int
+var x int, y int
+var x, y int
+var (
+  x int
+  y int
+)
 
-## よく使うパッケージ
+var x int = 1
+var x, y int = 1, 2
+var x, y = 1, 2
 
-* time
-  time.Sleep
-  time.Now
+x := 1
+x, y := 1, 2
+```
 
-* math
-  math.Cos
-  math.Sin
+--
 
-* math/rand
-  rand.Seed
-  rand.Intn
+## 型変換
 
+```
+int(x)
+float64(x)
+```
+--
 
----
+## 他
 
-## termbox-goの関数
+```
+* panic     ランタイムエラーを発生させる
+* defer     関数が終了する際に呼び出される(ただしpanicが発生しても実行される)
+```
 
-termbox.Init
-termbox.Close
-termbox.Event
-termbox.PollEvent
-termbox.SetCell
-termbox.ColorDefault
-termbox.Attribute
-termbox.Flush
-termbox.EventKey
-termbox.KeyEsc
-termbox.Size
+--
 
+## 並行処理
+
+```
+* gorutine: スレッドのようなもの
+          gorutineの作り方: 関数の前にgoキーワードをつける
+* Channel: gorutine間でデータの通信を行うためのもの
+* select: 複数のchannelを管理するもの
+         「case」に指定したチャネルのうち、どれかを受信するまで待機する(switch文に似てる)
+         「default」節は、どのチャネルも受信しなかった際に呼ばれる
+
+↓ こちらのスライドがわかりやすかった
+
+(https://www.slideshare.net/takuyaueda967/goroutine-channel-go)
+
+```
+
+--
+
+## termbox-go
+
+TermboxはもともとC言語で実装されている、CLI上に描画、イベントのハンドリングなどができるライブラリ
+
+(https://github.com/nsf/termbox-go)
+
+--
+
+## 関数・属性・定数
+
+```
+* func Init             termboxの初期化
+* func Close            termboxを閉じる
+* func PollEvent        イベントを待ち、それを返す
+* func SetCell          文字をセットする
+* func Flush            バッファを表示する
+* func Clear            バッファをクリアする
+* func Size             内部バックバッファのサイズ（端末のウィンドウサイズとほとんど同じ)を返す
+* type Event            termboxイベント(struct)
+* type Attribute        属性(uint16 = 符号なし16-ビット整数)
+* const EventKey        キーイベント(Eventのtype属性の1つ)
+* const KeyEsc          ESCキー
+
+```
+--
+
+## 定数(色の定義)
+
+```
+* const ColorDefault    0(Attribute型)
+* const ColorBlack      1(Attribute型)
+* const ColorRed        2(Attribute型)
+* const ColorGreen      3(Attribute型)
+* const ColorYellow     4(Attribute型)
+* const ColorBlue       5(Attribute型)
+* const ColorMagenta    6(Attribute型)
+* const ColorCyan       7(Attribute型)
+* const ColorWhite      8(Attribute型)
+```
+
+--
+
+詳しくは
+
+(ドキュメント: https://godoc.org/github.com/nsf/termbox-go)
+
+--
+
+## 花火の描画 補足
+
+![circle]( ./images/circle.png "circle")
 
 ---
 
 ## はまったところ
 
+--
+
+* 標準の機能が少ない(import多々)
+* importしているのにパッケージを使っていなかったらエラー
+* 型変換が面倒(rubyと違って同じ型同士じゃないと演算できないとか)
+* rune型
+
 ---
 
 ## まとめ
 
----
-
-
-# おまけ
-
----
-
-## 好きな記事
 
 ---
 
