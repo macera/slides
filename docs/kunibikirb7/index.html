@@ -1,0 +1,336 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Kunibiki.rb#7</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown
+           data-separator="\n---\n$"
+           data-vertical="\n--\n">
+           <script type="text/template">
+# Kunibiki.rb#7
+
+Rails祭り!!!!!
+
+---
+
+## おしながき
+
+* 自己紹介
+* Kunibiki.rbの概要
+* 仕事でよく使うActiveSupportを晒す
+* ActiveModelとメタプロを使った実装の話
+* まとめ
+
+---
+
+## 自己紹介
+
+* 名前: セラリン
+* 仕事: Railsを使ったアプリケーション開発
+* Rails歴: 5年くらい
+* 島根移住歴: 2年と4ヶ月
+* 趣味: ゲーム(ドラクエとかRPG系)、料理、旅行
+
+![cookies]( ./images/cookies.png "cookies")
+最近の料理
+
+---
+
+# Kunibiki.rbの概要
+
+---
+
+## Kunibiki.rbの成り立ち
+
+![kunibikirb_birth]( ./images/kunibikirb_birth.png "kunibikirb_birth")
+
+---
+
+## Kunibiki.rbのモットー
+
+```
+* ゆるい
+* 気軽にLT
+* LTやらない人も発言しやすい環境(マサカリ歓迎)
+* 初心者向けRuby、Railsだと物足りない
+* 仕事で困ったこと、役立ちそうなことをシェア
+* 第5回目からRuby以外のプログラミング言語OK
+* 2、３ヶ月に1回開催
+```
+
+![kunibiki_logo]( ./images/kunibiki_logo.png "kunibiki_logo")
+
+---
+
+## 今回の発表の構成
+
+* Rails祭りだし、Ruby中級者向けの勉強会っぽい話がしたい
+* Railsのドキュメント(RailsGuidesに書いているようなことだけは中級者は物足りないかな〜)
+* 過去の自分のリポジトリを漁る
+* 特異クラス(Ruby技術者認定試験Goldで出題するやつ)を使っている実装を発見する
+
+---
+
+# 仕事でよく使うActiveSupportを晒す
+
+
+---
+
+## ActiveModelとメタプロを使った実装の話
+
+---
+
+## 当時こういうのを作りたかった
+
+```
+1. 管理者が画面上で入力フォームを作る
+  (テキストボックス、ラジオボタン等、検証機能の有無を選択できる)
+2. 訪問者が画面上でその入力フォームに必須事項を入力する
+3. 管理者は訪問者が入力した情報を画面上で確認出来る
+
+googleフォームみたいな感じ
+```
+
+---
+
+## こういう動的なフォームも作ることができる。
+## そう、ActiveModelならね。
+
+---
+
+## ActiveModelとは
+
+特にDBに値を保存したりする必要はないが
+ActiveRecordのモデルの機能(バリデーションなど)は使いたい場合に用いられる。
+(Rails4から)
+
+* お問い合わせのメールフォーム
+* 検索フォーム(ransackを使わない場合、よく使われている気がする)
+
+---
+
+# 実演！！！！！
+
+---
+
+## ざっくり作り方
+
+```
+1. フォーム用のベースとなるActiveModelを用意する
+2. 上記のモデルのインスタンスを作り、特異クラスを取り出す。
+3. 特異クラスにclass_evalを使って
+   動的に属性やバリデーションを定義させる(管理者が設定した値を使って)
+4. 上記インスタンスをControllerに渡し、
+   あとは通常ののActiveModelのようにform_forなどを使ってフォームを作成する
+
+=> クラスではなく、オブジェクトごとに属性を定義(特異メソッド)しているので、
+   ベースのActiveModelのクラスに影響がない
+```
+
+---
+
+## 特異クラスとは
+
+```
+* 特定のオブジェクトだけが使用できるクラス
+* 特異メソッド => 特定のオブジェクトだけが使用出来るメソッド
+* 特異クラスを使用すると、
+  特定のオブジェクトしか存在しない属性やメソッドを定義できるようになる
+* 特異クラスからオブジェクトを作ったり、サブクラスを作ったりすることはできない
+```
+
+---
+
+## 特異メソッドの例
+
+```
+class Slime
+  def attack
+    p 'こうげき'
+  end
+end
+slime1 = Slime.new
+slime2 = Slime.new
+slime1.attack #=> 'こうげき'
+slime2.attack #=> 'こうげき'
+def slime2.hoimi  # 特異メソッドを定義
+  p 'ホイミ'
+end
+slime1.hoimi #=> undefined methodエラー
+slime2.hoimi #=> 'ホイミ'
+```
+
+---
+
+## 特異クラスの作成タイミング
+
+```
+# 特異メソッドを定義した時
+obj = Object.new
+def obj.define_singleton_method
+  :singleton_method
+end
+```
+
+```
+# 特異クラス定義式を評価した時
+class << obj
+  # この中に通常のメソッドと同様に特異メソッドを定義する
+end
+```
+
+```
+# Object.singleton_classでオブジェクトに対して特異クラスの確認をする時
+obj.singleton_class
+```
+
+---
+
+## 特異クラスの取り出し方法
+
+```
+# self=クラス自身なのでクラスを返している
+# class Test; self; endの場合はTestクラスが返される
+singleton = class << obj; self; end
+```
+
+```
+# 特異クラスを返すメソッド
+singleton = obj.singleton_class
+```
+---
+
+## 特異クラスは通常のクラスと同様のメソッドが使える
+
+* define_method
+* class_eval
+
+これらを使って特異メソッドを定義していきます
+
+---
+
+## では、Railsに戻り、さっそく作っていきましょう
+
+---
+
+## 用意するテーブル
+
+```
+* フォームモデルテーブル
+  - title
+* 属性テーブル
+  - _id
+  - 属性名(表示名)
+  - フィールド種別(セレクトボックス、テキストボックスなど)
+  - 必須かどうか？
+  - 制限する文字数
+* 属性オプションテーブル
+  - _id
+  - オプション名
+  - 値
+```
+
+---
+
+### 1. フォーム用のベースとなるActiveModelを用意する
+
+```
+class FormBase
+  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend ActiveModel::Naming
+
+  def initialize(attributes = {})
+    attributes.each do |name, value|
+      send("#{name}=", value)
+    end
+  end
+
+  def persisted?
+    false
+  end
+end
+```
+
+---
+
+### 2. モデルのインスタンスを作り、特異クラスを取り出す
+### 3. 特異クラスにclass_evalを使って動的に属性やバリデーションを定義させる(管理者が設定した値を使って)
+
+---
+
+```
+
+# 特異メソッドが定義されたActiveModelのオブジェクトを返すメソッド
+# 通常のActiveModelのオブジェクトを同様form_forに渡せる
+# head ... フォームモデル(ActiveRecord)のインスタンス
+# head.details ... 属性(ActiveRecord)のインスタンス(配列)
+
+def self.generate_form_instance(head)
+    form = FormBase.new
+    form_class = form.singleton_class
+    form_class.class_eval do
+      head.details.each do |d|
+        column = "detail#{d.id.to_s}".to_sym
+        attr_accessor column
+        if d.required
+          validates column, :presence => true
+        end
+      end
+    end
+    form
+  end 
+```
+
+---
+
+# おわり
+
+           </script>
+       </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				transition: 'default',
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+    <style>
+      body { text-transform: none; }
+    </style>
+	</body>
+</html>
