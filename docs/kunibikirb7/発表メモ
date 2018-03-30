@@ -36,7 +36,7 @@
 * current, yesterday, tomorrow
 * past?, today?, future?
 * prev_year, next_year, last_year, last_month
-* beginning_of_week, end_of_week, beginning_of_month, end_of_month, _day, _year
+* beginning_of_week, end_of_week, beginning_of_month, end_of_month, ~_day, ~_year
 * weeks_ago(), 
 * advance(), change()
 * ago, since

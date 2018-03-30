@@ -83,15 +83,6 @@ Rails祭り!!!!!
 
 ---
 
-## 今回の発表の構成
-
-* Rails祭りだし、Ruby中級者向けの勉強会っぽい話がしたい
-* Railsのドキュメント(RailsGuidesに書いているようなことだけは中級者は物足りないかな〜)
-* 過去の自分のリポジトリを漁る
-* 特異クラス(Ruby技術者認定試験Goldで出題するやつ)を使っている実装を発見する
-
----
-
 # 仕事でよく使うActiveSupportを晒す
 
 
@@ -157,7 +148,8 @@ ActiveRecordのモデルの機能(バリデーションなど)は使いたい場
 * 特異メソッド => 特定のオブジェクトだけが使用出来るメソッド
 * 特異クラスを使用すると、
   特定のオブジェクトしか存在しない属性やメソッドを定義できるようになる
-* 特異クラスからオブジェクトを作ったり、サブクラスを作ったりすることはできない
+* 特異クラスからオブジェクトを作ったり、
+  サブクラスを作ったりすることはできない
 ```
 
 ---
@@ -237,18 +229,12 @@ singleton = obj.singleton_class
 ## 用意するテーブル
 
 ```
-* フォームモデルテーブル
-  - title
-* 属性テーブル
-  - _id
-  - 属性名(表示名)
-  - フィールド種別(セレクトボックス、テキストボックスなど)
-  - 必須かどうか？
-  - 制限する文字数
-* 属性オプションテーブル
-  - _id
-  - オプション名
-  - 値
+* Forms  ... フォームのタイトルを格納
+* FormItem  ... フィールドの名称、種類、必須かどうか 等を格納
+* Option ... フィールド(セレクトボックスやラジオボタン)
+             のオプションの名称と種類を格納
+* Answer ... フォームの回答者を格納
+* AnswerContent ... フィールドの回答を格納
 ```
 
 ---
@@ -256,20 +242,21 @@ singleton = obj.singleton_class
 ### 1. フォーム用のベースとなるActiveModelを用意する
 
 ```
-class FormBase
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend ActiveModel::Naming
+class BaseForm
+  include ActiveModel::Model
 
   def initialize(attributes = {})
     attributes.each do |name, value|
       send("#{name}=", value)
     end
   end
-
-  def persisted?
-    false
+  
+  def set_attributes(attributes = {})
+    attributes.each do |name, value|
+      send("#{name}=", value)
+    end
   end
+
 end
 ```
 
@@ -281,21 +268,21 @@ end
 ---
 
 ```
-
 # 特異メソッドが定義されたActiveModelのオブジェクトを返すメソッド
 # 通常のActiveModelのオブジェクトを同様form_forに渡せる
 # head ... フォームモデル(ActiveRecord)のインスタンス
-# head.details ... 属性(ActiveRecord)のインスタンス(配列)
-
+# head.form_items ... 属性(ActiveRecord)のインスタンス(配列)
+```
+```
 def self.generate_form_instance(head)
-    form = FormBase.new
+    form = BaseForm.new
     form_class = form.singleton_class
     form_class.class_eval do
-      head.details.each do |d|
+      head.form_items.each do |d|
         column = "detail#{d.id.to_s}".to_sym
         attr_accessor column
         if d.required
-          validates column, :presence => true
+          validates column, presence: true
         end
       end
     end
