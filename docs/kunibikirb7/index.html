@@ -263,15 +263,15 @@ end
 ```
 # 特異メソッドが定義されたActiveModelのオブジェクトを返すメソッド
 # 通常のActiveModelのオブジェクトを同様form_forに渡せる
-# head ... フォームモデル(ActiveRecord)のインスタンス
-# head.form_items ... 属性(ActiveRecord)のインスタンス(配列)
+# form ... フォームモデル(ActiveRecord)のインスタンス
+# form_items ... 属性(ActiveRecord)のインスタンス(配列)
 ```
 ```
-def self.generate_form_instance(head)
-    form = BaseForm.new
-    form_class = form.singleton_class
+def self.generate_form_instance(form)
+    base = BaseForm.new
+    form_class = base.singleton_class
     form_class.class_eval do
-      head.form_items.each do |d|
+      form.form_items.each do |d|
         column = "detail#{d.id.to_s}".to_sym
         attr_accessor column
         if d.required
