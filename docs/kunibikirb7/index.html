@@ -219,10 +219,10 @@ singleton = obj.singleton_class
 
 ---
 
-## 用意するテーブル
+## 用意するモデル(テーブル)
 
 ```
-* Forms  ... フォームのタイトルを格納
+* Form  ... フォームのタイトルを格納
 * FormItem  ... フィールドの名称、種類、必須かどうか 等を格納
 * Option ... フィールド(セレクトボックスやラジオボタン)
              のオプションの名称と種類を格納
@@ -279,7 +279,7 @@ def self.generate_form_instance(form)
         end
       end
     end
-    form
+    base
   end 
 ```
 
