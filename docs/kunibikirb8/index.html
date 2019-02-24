@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Kunibiki.rb#7</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown
+           data-separator="\n---\n$"
+           data-vertical="\n--\n">
+           <script type="text/template">
+# Kunibiki.rb#8
+
+LT & ハンズオン
+
+---
+
+## 全体のおしながき
+
+* 自己紹介
+* Kunibiki.rbの概要
+* LT&ハンズオン「Rails+GraphQL+Reactで簡単なアプリを作る」
+
+---
+
+## 自己紹介
+
+* 名前: セラリン
+* 由来: セラノリコ + スラリン(DQVなどに登場するスライムの名前)
+* 仕事: Railsを使ったアプリケーション開発
+* Rails歴: 6年くらい
+* 島根移住歴: 3年と4ヶ月
+* 趣味: ゲーム(ドラクエとかRPG系)、料理、旅行
+
+---
+
+# Kunibiki.rbの概要
+
+---
+
+## Kunibiki.rbの成り立ち
+
+![kunibikirb_birth]( ./images/kunibikirb_birth.png "kunibikirb_birth")
+
+---
+
+## Kunibiki.rbのモットー
+
+```
+* ゆるい
+* 気軽にLT
+* LTやらない人も発言しやすい環境(マサカリ歓迎)
+* 初心者向けRuby、Railsだと物足りない
+* 仕事で困ったこと、役立ちそうなことをシェア
+* 第5回目からRuby以外のプログラミング言語OK
+* 2、３ヶ月に1回土曜日に開催(※)
+
+※ オープンソースラボのリニューアル工事とその後の土曜争奪戦により今回は約1年ぶりの開催
+
+
+```
+
+![kunibiki_logo]( ./images/kunibiki_logo.png "kunibiki_logo")
+
+---
+
+## Rails+GraphQL+Reactで簡単なアプリを作る
+
+---
+
+おしながき
+
+1. 私がGraphQLを使い始めたワケ
+2. GraphQLとは
+3. 今回のアプリの構成
+4. バックエンド
+5. フロントエンド
+
+---
+
+## 1. 私がGraphQLを使い始めたワケ
+
+---
+
+## 発表者の情報
+
+* 普段はRails・JQueryで開発していることが多い。
+* フロントエンド初心者(Reactはちょっとわかる。Reduxはわからん)
+* Reactを使ったイケてるフロントエンドアプリ開発をしたいと思っている。
+* 去年の大阪の勉強会でGraphQLのハンズオンに参加してきた。
+
+---
+
+Reactを使ったイケてるフロントエンドアプリ開発をしたいと思っている
+
+しかしそれには弊害が...
+
+---
+
+## 弊害
+
+* ① バックエンド(API)を作らないといけない(めんどい)
+* ② フロントエンドとバックエンドの繋ぎこみが難しい
+* ③ 未だによくわからんRedux...
+
+---
+
+## なかなかフロントエンドのスタート地点に立てない!!!
+## (フロントエンド開発に集中したい)
+
+---
+
+## そこで現れたのがGraphQLとそのクライアントライブラリである!!!
+
+(ちなみに大阪の勉強会(Slack)で存在を知った)
+
+---
+
+* ① バックエンド(API)を作らないといけない(めんどい)
+
+=> GraphQLを使えば簡単にバックエンド(API)アプリが作られる!
+
+* ② フロントエンドとバックエンドの繋ぎこみが難しい
+
+=> apollo-client(GraphQLのクライアントライブラリ)を使えば、簡単に繋ぎこみが行える!
+
+* ③ 簡単なアプリであればReduxを使う必要がない(というかほぼいらなくなりそう)
+
+---
+
+## そんなこんなでフロントエンドに尻込みしていた私も重い腰を上げたのである
+
+---
+
+2. GraphQLとは
+
+---
+
+TODO:
+
+---
+
+3. 今回のアプリの構成
+
+---
+
+フロント
+React + apollo-client(GraphQLのクライアントアプリ)
+
+バックエンド
+GraphQL + RubyonRails + SQLite
+
+---
+
+ちなみに大阪の勉強会は...
+
+フロントエンド
+React + apollo-client
+
+バックエンド
+GraphQL + Prisma + PostgreSQL
+
+(実はこっちの方が手軽にAPIを作成できるが、今回はRailsエンジニアがとりあえず始めやすい構成にしてみた)
+
+---
+
+
+
+---
+
+# おわり
+
+           </script>
+       </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				transition: 'default',
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+    <style>
+      body { text-transform: none; }
+    </style>
+	</body>
+</html>

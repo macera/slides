@@ -1,0 +1,48 @@
+# すべてのオブジェクトで使用できる拡張機能
+* present?
+* blank?
+* presence
+* try
+?* class_eval
+* in?   (include?)
+
+# stringの拡張
+* truncate
+* pluralize
+* singularize
+* camelize
+* underscore
+* dasherize
+* demodulize
+* deconstantize
+* tableize
+* classify
+* to_date, to_time, to_datetime
+* to_s   to_s(:phone), to_s(:delimited), to_s(:rounded), to_s(:human_size)  number_to_delimited()
+
+# Enumerableの拡張
+* sum
+* many?
+
+# Hashの拡張
+* symbolize_keys, symbolize_keys!(to_options, to_options!)
+* slice, slice!
+* compact, compact!
+
+# Rangeの拡張
+* include?, ===
+
+# Dateの拡張
+* current, yesterday, tomorrow
+* past?, today?, future?
+* prev_year, next_year, last_year, last_month
+* beginning_of_week, end_of_week, beginning_of_month, end_of_month, ~_day, ~_year
+* weeks_ago(), 
+* advance(), change()
+* ago, since
+* utc
+
+
+番外
+ruby
+* source_location 
